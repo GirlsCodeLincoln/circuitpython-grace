@@ -1,6 +1,6 @@
 import grace
-import color
-import colorset
+import grace.color as color
+import grace.colorset as colorset
 
 grace.init()
 
@@ -24,4 +24,4 @@ while True:
     grace.rainbow_chase(0.2)
     grace.rainbow_chase(0.2)
     grace.rainbow_chase(0.2)
-    grace.rainbow_chase(0.)
+    grace.rainbow_chase(0.2)

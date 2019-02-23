@@ -2,8 +2,8 @@ import time
 import random
 import board
 import neopixel
-import color
-import colorset
+import grace.color as color
+import grace.colorset as colorset
 
 global pixels
 

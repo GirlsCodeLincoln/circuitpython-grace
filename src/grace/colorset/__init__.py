@@ -1,4 +1,4 @@
-import color
+import grace.color as color
 
 rainbow = [color.red, color.orange, color.yellow, color.green, color.blue, color.indigo]
 
