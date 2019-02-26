@@ -9,7 +9,7 @@ global pixels
 
 def init():
     global pixels
-    pixels = neopixel.NeoPixel(board.A0, 3, brightness=.2, auto_write=False)
+    pixels = neopixel.NeoPixel(board.A0, 3, brightness=1, auto_write=False)
     all_off()
 
 def all_off(seconds = 0):
