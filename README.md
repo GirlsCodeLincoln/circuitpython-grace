@@ -32,8 +32,8 @@ The following methods set the speed of the animations. The normal speed setting 
 
 - `grace.slide_out(color.red)` Animates a red pixel moving from the first LED to the last
 - `grace.slide_in(color.red)` Animates a red pixel moving from the last LED to the first
-- `grace.chase_in(color.red)` Animates a red pixel from the last LED to all LEDs
 - `grace.chase_out(color.red)` Animates a red pixel from the first LED to all LEDs
+- `grace.chase_in(color.red)` Animates a red pixel from the last LED to all LEDs
 
 ### Complex Animations
 
