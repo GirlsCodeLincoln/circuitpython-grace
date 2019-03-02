@@ -39,8 +39,8 @@ The following methods set the speed of the animations. The normal speed setting 
 
 - `grace.rainbow_cycle()` All pixels smothly change between colors
 - `grace.rainbow_chase()` The rainbow moves through the LEDs
-- `grace.rainbow_slide_out(0.1)` Does a slide_out for each color of the rainbow
-- `grace.rainbow_slide_in(0.1)` Does a slide_in for each color of the rainbow
+- `grace.rainbow_slide_out()` Does a slide_out for each color of the rainbow
+- `grace.rainbow_slide_in()` Does a slide_in for each color of the rainbow
 
 ## Colors
 
