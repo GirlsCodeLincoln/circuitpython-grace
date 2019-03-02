@@ -1,27 +1,58 @@
 import time
-import random
-import board
 import neopixel
-import grace.color as color
 import grace.colorset as colorset
 
 global pixels
+__interval = 3
 
-def init():
+def configure(pin, num_pixels, brightness):
     global pixels
-    pixels = neopixel.NeoPixel(board.A0, 3, brightness=1, auto_write=False)
+    pixels = neopixel.NeoPixel(pin, num_pixels, brightness=brightness, auto_write=False)
     all_off()
 
-def all_off(seconds = 0):
-    all_on((0, 0, 0))
-    pixels.show()
-    wait(seconds)
+def set_brightness(brightness):
+    global pixels
+    pixels.brightness = brightness
 
-def all_on(color, seconds = 0):
-    for i in range(len(pixels)):
-        pixels[i] = color
+def dont_wait():
+    global __interval
+    __interval = 0
+
+def fastest():
+    global __interval
+    __interval = 0.3
+
+def faster():
+    global __interval
+    __interval = 0.7
+
+def fast():
+    global __interval
+    __interval = 1.2
+
+def normal():
+    global __interval
+    __interval = 3
+
+def slow():
+    global __interval
+    __interval = 5
+
+def slower():
+    global __interval
+    __interval = 8
+
+def slowest():
+    global __interval
+    __interval = 12
+
+def all_off():
+    all_on((0, 0, 0))
+
+def all_on(color):
+    pixels.fill(color)
     pixels.show()
-    wait(seconds)
+    wait(__interval)
 
 def __wheel(pos):
     if pos < 0 or pos > 255:
@@ -34,72 +65,79 @@ def __wheel(pos):
     pos -= 170
     return (pos * 3, 0, 255 - pos * 3)
 
-def single(num, color, seconds = 0):
+def __single_no_wait(num, color):
     pixel_set = [(0, 0, 0)] * len(pixels)
     pixel_set[num] = color
-    pattern(pixel_set, seconds)
+    __pattern_no_wait(pixel_set)
 
-def pattern(colorList, seconds = 0):
-    for i in range(len(colorList)):
+def single(num, color):
+    __single_no_wait(num - 1, color)
+    wait(__interval)
+
+def __pattern_no_wait(colorList):
+    for i in range(min(len(colorList), len(pixels))):
         pixels[i] = colorList[i]
     pixels.show()
-    wait(seconds)
 
-def __slide(color, seconds, pixel_range):
+def pattern(colorList):
+    __pattern_no_wait(colorList)
+    wait(__interval)
+
+def __slide(color, pixel_range):
     for num in pixel_range:
-        single(num, color, seconds)
-    all_off()
+        __single_no_wait(num, color)
+        wait(__interval / 3)
 
-def slide_out(color, seconds = 0):
-    __slide(color, seconds, range(len(pixels)))
+def slide_out(color):
+    __slide(color, range(len(pixels)))
 
-def slide_in(color, seconds = 0):
-    __slide(color, seconds, range(len(pixels) - 1, -1, -1))
+def slide_in(color):
+    __slide(color, range(len(pixels) - 1, -1, -1))
 
-def chase_out(color, seconds = 0.2):
+def chase_out(color):
     for i in range(len(pixels)):
         pixels[i] = color
         pixels.show()
-        wait(seconds)
+        wait(__interval / 3)
 
-def chase_in(color, seconds = 0.2):
+def chase_in(color):
     for i in range(len(pixels) - 1, -1, -1):
         pixels[i] = color
         pixels.show()
-        wait(seconds)
+        wait(__interval / 3)
 
-def rainbow_cycle(seconds = 0.01):
+def rainbow_cycle():
     for j in range(255):
         for i in range(len(pixels)):
             rc_index = (i * 256 // len(pixels)) + j
             pixels[i] = __wheel(rc_index & 255)
         pixels.show()
-        wait(seconds)
+        wait(__interval / 100)
 
-def rainbow_chase(seconds = 0.1):
-    for i in range(len(colorset.rainbow)):
+def rainbow_chase():
+    for i in range(len(colorset.rainbow) * 2):
         for j in range(len(pixels)):
             pixels[j] = colorset.rainbow[(i + j) % len(colorset.rainbow)]
+        wait(__interval / 6)
         pixels.show()
-        wait(seconds)
 
-def rainbow_slide_out(seconds = 0.1):
+def rainbow_slide_out():
     for i in range(len(colorset.rainbow)):
-        slide_out(colorset.rainbow[i], seconds)
+        slide_out(colorset.rainbow[i])
 
-def rainbow_slide_in(seconds = 0.1):
+def rainbow_slide_in():
     for i in range(len(colorset.rainbow)):
-        slide_in(colorset.rainbow[i], seconds)
+        slide_in(colorset.rainbow[i])
 
-def turn_on(num, color, seconds = 0):
-    pixels[num] = color
+def turn_on(num, color):
+    pixels[num - 1] = color
     pixels.show()
-    wait(seconds)
+    wait(__interval)
 
-def turn_off(num, seconds = 0):
-    pixels[num] = (0, 0, 0)
+def turn_off(num):
+    pixels[num - 1] = (0, 0, 0)
     pixels.show()
-    wait(seconds)
+    wait(__interval)
 
 def wait(seconds):
     time.sleep(seconds)
